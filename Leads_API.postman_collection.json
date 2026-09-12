@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "8b3f173b-e069-42b7-a36c-941fcdbc056f",
+		"name": "CRM Lead Management API",
+		"description": "Postman Collection for testing the Lead Management REST endpoints built with NestJS and PostgreSQL.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Lead",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"John Doe\",\n    \"company\": \"Acme Corporation\",\n    \"phone\": \"9876543210\",\n    \"email\": \"john.doe@example.com\",\n    \"city\": \"New York\",\n    \"source\": \"Website\",\n    \"assignedEmployee\": \"Emma Watson\",\n    \"status\": \"New\",\n    \"priority\": \"High\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/leads",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"leads"
+					]
+				},
+				"description": "Registers a new customer lead. Throws a 409 Conflict if phone number or email is already registered."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Leads List (Search, Filter, Sort, Paginate)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/leads?search=John&status=New&priority=High&sortBy=createdAt&sortOrder=desc&page=1&limit=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"leads"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "John",
+							"description": "Search term matching Name, Company, Phone or Email"
+						},
+						{
+							"key": "status",
+							"value": "New",
+							"description": "Filter by status: New, Contacted, Qualified, Proposal Sent, Won, Lost"
+						},
+						{
+							"key": "priority",
+							"value": "High",
+							"description": "Filter by priority: High, Medium, Low"
+						},
+						{
+							"key": "sortBy",
+							"value": "createdAt",
+							"description": "Sort database field (default: createdAt)"
+						},
+						{
+							"key": "sortOrder",
+							"value": "desc",
+							"description": "asc for oldest first, desc for newest first"
+						},
+						{
+							"key": "page",
+							"value": "1",
+							"description": "Page offset"
+						},
+						{
+							"key": "limit",
+							"value": "10",
+							"description": "Number of records per page"
+						}
+					]
+				},
+				"description": "Retrieves leads using filters, sorting direction, search keywords, and server-side pagination offsets."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Lead By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/leads/lead-uuid-here",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"leads",
+						"lead-uuid-here"
+					]
+				},
+				"description": "Retrieves single lead details using its unique UUID identifier."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Lead Details",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"company\": \"Updated Acme Corp\",\n    \"status\": \"Contacted\",\n    \"priority\": \"Medium\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/leads/lead-uuid-here",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"leads",
+						"lead-uuid-here"
+					]
+				},
+				"description": "Updates fields of an existing lead. Trrows 404 if ID doesn't exist, and 409 if phone/email unique constraint fails."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Lead Record",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/leads/lead-uuid-here",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"leads",
+						"lead-uuid-here"
+					]
+				},
+				"description": "Deletes a lead entry from the database."
+			},
+			"response": []
+		}
+	]
+}
